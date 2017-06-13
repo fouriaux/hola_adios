@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<adios-config host-language="C">
+  <adios-group name="hola">
+    <var name="batch_size" type="integer"/>
+    <var name="/hola_msg" gwrite="python_name_for_write_hola_msg" gread="python_name_for_read_hola_msg" type="byte" dimensions="batch_size"/>
+    <attribute name="/hola_msg/description" value="A Message" type="string"/>
+  </adios-group>
+  <method group="hola" method="MPI"/>
+  <buffer max-size-MB="1"/>
+</adios-config>
+

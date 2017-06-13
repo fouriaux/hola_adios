@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<adios-config host-language="C">
+  <adios-group name="hola" coordination-communicator="comm">
+    <var name="global_size" type="integer"/>
+    <var name="offset"      type="integer"/>
+    <var name="batch_size"  type="integer"/>
+    <global-bounds dimensions="global_size" offsets="offset">
+      <var name="/hola_msg" gwrite="t" gread="t" type="byte" dimensions="batch_size"/>
+    </global-bounds>
+    <!--    <attribute name="description" path="/hola_msg" value="Global array containing Hola msg" type="string"/> !-->
+  </adios-group>
+  <method group="hola" method="MPI"/>
+  <buffer max-size-MB="1"/>
+</adios-config>
