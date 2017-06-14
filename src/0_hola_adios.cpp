@@ -37,7 +37,6 @@ int main (int argc, char** argv) {
   MPI_Comm_size (MPI_COMM_WORLD, &com_size);
   adios_init ("xml/0_config.xml", comm);
   batch_size = nb_chars /com_size;
-  std::cout << batch_size << std::endl;
   if (rank == MASTER)
     std::cout << data << std::endl;
 
