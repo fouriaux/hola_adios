@@ -20,7 +20,7 @@ void open (const char* filename) {
 }
 
 void write (float* buffer, uint64_t offset, uint64_t global_size, uint64_t batch_size){
-#include "gwrite_report.ch"
+#include "7_gwrite_report.ch"
 }
 
 void close () {
