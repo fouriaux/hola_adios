@@ -93,9 +93,41 @@ This sample demonstrates that the API works correctly with automatic C scalar va
 
 ### 9_report.cpp
 
-This sample demonstrates the usage of the no XML API.
+This sample demonstrates the usage of the no XML API, from previous example
 
 
 ### 10_report.cpp
 This sample demonstrate the usage of writing subblocks using the no XML interface.
+expected output:
+ The trick here is to declare as many times as needed the array name using the no_xml api before using it
+```
+bpls --dump no_xml_several_chunk
+  integer  global_size  scalar
+96 
+
+  integer  batch_size   scalar
+12 
+
+  integer  offset       scalar
+48 
+
+  real     data         {96}
+    ( 0)    2 2 2 2 2 2
+    ( 6)    2 2 2 2 2 2
+    (12)    1 1 1 1 1 1
+    (18)    1 1 1 1 1 1
+    (24)    3 3 3 3 3 3
+    (30)    3 3 3 3 3 3
+    (36)    3 3 3 3 3 3
+    (42)    3 3 3 3 3 3
+    (48)    0 0 0 0 0 0
+    (54)    0 0 0 0 0 0
+    (60)    2 2 2 2 2 2
+    (66)    2 2 2 2 2 2
+    (72)    1 1 1 1 1 1
+    (78)    1 1 1 1 1 1
+    (84)    0 0 0 0 0 0
+    (90)    0 0 0 0 0 0
+```
+
 
