@@ -1,3 +1,11 @@
+
+/*
+ * This demonstrate that we can take addresses of temporaries variables
+ *
+ *
+ */
+
+
 #include <iostream>
 #include <mpi.h>
 #include <adios.h>
@@ -20,7 +28,18 @@ void open (const char* filename) {
 }
 
 void write (float* buffer, uint64_t offset, uint64_t global_size, uint64_t batch_size){
-#include "7_gwrite_report.ch"
+  uint64_t off        = offset;
+  uint64_t glob       = global_size;
+  uint64_t batch      = batch_size;
+  adios_groupsize = 4 \
+                + 4 \
+                + 4 \
+                + 4 * (batch_size);
+  adios_group_size (adios_handle, adios_groupsize, &adios_totalsize);
+  adios_write (adios_handle, "global_size", &glob);
+  adios_write (adios_handle, "offset", &off);
+  adios_write (adios_handle, "batch_size", &batch);
+  adios_write (adios_handle, "data", buffer);
 }
 
 void close () {
