@@ -27,7 +27,7 @@ HELLO WORLD LIKE EXAMPLES
 
   Usage of Global Array.
 NOTES:
-  in XML coordination-communicator attribute must be specified on group that use global arrays (error message not clear...)
+  in XML coordination-communicator attribute is mandatory must be specified on group that use global arrays (error message not clear...)
 
 Note the difference when now dumping file:
   > $ADIOS_ROOT/bin/bpls --string --dump data/2.bp /hola_msg 
@@ -45,7 +45,11 @@ Note the difference when now dumping file:
 
 ### 5_hola_hdf5.cpp
 
-  Reading a Structure in HDF5
+  Writing HDF5 
+
+### 6_hola
+  Illegally writing two times the same variable using XML API.
+
 
 MORE ADVANCED SYNTHETIC EXAMPLES
 ---
@@ -97,7 +101,7 @@ This sample demonstrates the usage of the no XML API, from previous example
 
 
 ### 10_report.cpp
-This sample demonstrate the usage of writing subblocks using the no XML interface.
+This sample demonstrate the usage of writing sub-blocks using the no XML interface.
 expected output:
  The trick here is to declare as many times as needed the array name using the no_xml api before using it
 ```
