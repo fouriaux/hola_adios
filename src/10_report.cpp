@@ -96,7 +96,7 @@ int main (int argc, char** argv) {
   MPI_Scatter (offsets.data(),     2, MPI_UINT64_T, offset,     2, MPI_UINT64_T, 0, comm);
   std::cout << "[" << rank << "]:[0]" << batch_size << ";" << offset[0] << std::endl;
   std::cout << "[" << rank << "]:[1]" << batch_size << ";" << offset[1] << std::endl;
-  
+
   buffer = (float*) malloc (batch_size * 2 * sizeof(float));
   for (int i = 0; i < batch_size*2; i++) {
     buffer[i] = rank;

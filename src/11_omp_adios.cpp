@@ -1,14 +1,14 @@
 #include <iostream>
 #include <cstring> 
 /*
- *     _ _           _            _       _ _           _ 
- *    (_) |__   ___ | | __ _     / \   __| (_) ___  ___| |
- *    | | '_ \ / _ \| |/ _` |   / _ \ / _` | |/ _ \/ __| |
- *    | | | | | (_) | | (_| |  / ___ \ (_| | | (_) \__ \_|
- *    \_|_| |_|\___/|_|\__,_| /_/   \_\__,_|_|\___/|___(_)
-
+ *     ___  __  __ ____       _    ____ ___ ___  ____
+ *    / _ \|  \/  |  _ \     / \  |  _ \_ _/ _ \/ ___|
+ *   | | | | |\/| | |_) |   / _ \ | | | | | | | \___ \
+ *   | |_| | |  | |  __/   / ___ \| |_| | | |_| |___) |
+ *    \___/|_|  |_|_|     /_/   \_\____/___\___/|____/
  *
- *  ADIOS is not threads safe: this coredump inside adios lib
+ *
+ *  Thread Safe ADIOS using no-xml API ?
  *
  *
  */
@@ -36,19 +36,26 @@ int main (int argc, char** argv) {
   strncpy (&hola[3][0],  R"(| | | | | (_) | | (_| |  / ___ \ (_| | | (_) \__ \_|)", 53);
   strncpy (&hola[4][0],  R"(\_|_| |_|\___/|_|\__,_| /_/   \_\__,_|_|\___/|___(_))", 53);
 
-  //NOTE: moving adios_open and close inside parallel section still raise an error at runtime inside adios lib
+  adios_init_noxml    (comm);
+  adios_declare_group (&adios_group_id,"report", "", adios_stat_no);
+  adios_select_method (adios_group_id, "MPI",    "verbose=3", "");
+  adios_define_var    (adios_group_id, "line_size",  "", adios_integer, 0,0,0);
+  adios_define_var    (adios_group_id, "nb_lines",   "", adios_integer, 0,0,0);
+
+  for (int i = 0; i < 5; i++)
+  {
+    adios_define_var             (adios_group_id, "line_idx", "", adios_integer, 0,0,0);
+    data_id1  = adios_define_var (adios_group_id, "data",     "", adios_real, "1, line_size", "nb_lines, line_size", "line_idx,0");
+  }
   adios_open  (&adios_handle, "hola", data_filename, "w", comm);
+  adios_write (adios_handle, "line_size", &line_size);
+  adios_write (adios_handle, "nb_lines", &nb_lines);
 #pragma omp parallel for
   for (int i = 0; i < 5; i++) {
- //   adios_write (adios_handle, "line_size", 53);   cannot pass a constant
- //   adios_write (adios_handle, "nb_lines", 5);     cannot pass a constant
-    adios_write (adios_handle, "line_size", &line_size);
-    adios_write (adios_handle, "nb_lines", &nb_lines);
     adios_write (adios_handle, "line_idx", &i);
-    adios_write (adios_handle, "/hola_msg", &hola[i]);
+    adios_write (adios_handle, "data", &hola[i]);
   }
   adios_close (adios_handle);
-
 
   // write struct in ADIOS file
   //
