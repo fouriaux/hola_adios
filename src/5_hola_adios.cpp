@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cstring> 
 /*
  *     _ _           _            _       _ _           _ 
  *    (_) |__   ___ | | __ _     / \   __| (_) ___  ___| |
@@ -8,30 +6,35 @@
  *    \_|_| |_|\___/|_|\__,_| /_/   \_\__,_|_|\___/|___(_)
 
  *
- *  TODO We got data structure to write in a file and retreive
+ *  Write and Read a data structure in ADIOS.
  *
- * */ 
+ */ 
+
+#include <iostream>
+#include <cstring>
+#include <mpi.h>
+#include <adios.h>
 
 
 struct HOLA_ADIOS { 
- char first_line 	[53];
- char second_line	[53];
- char third_line 	[53];
- char forth_line 	[53];
- char fifth_line 	[53];
+ char first_line  [53];
+ char second_line [53];
+ char third_line  [53];
+ char forth_line  [53];
+ char fifth_line  [53];
 };
 
 std::ostream& operator<<(std::ostream& s, const HOLA_ADIOS& hola) {
-	s << hola.first_line  << std::endl;
-	s << hola.second_line << std::endl;
-	s << hola.third_line  << std::endl;
-	s << hola.forth_line  << std::endl;
-	s << hola.fifth_line  << std::endl;
-	return s;
+  s << hola.first_line  << std::endl;
+  s << hola.second_line << std::endl;
+  s << hola.third_line  << std::endl;
+  s << hola.forth_line  << std::endl;
+  s << hola.fifth_line  << std::endl;
+  return s;
 }	
 int main (int argc, char** argv) {
   HOLA_ADIOS hola;
-  strncpy (hola.first_line,  R"( _ _           _            _       _ _           _ )", sizeof(hola.first_line)); 
+  strncpy (hola.first_line,   R"( _ _           _            _       _ _           _ )", sizeof(hola.first_line)); 
   strncpy (hola.second_line,  R"((_) |__   ___ | | __ _     / \   __| (_) ___  ___| |)", sizeof(hola.first_line));
   strncpy (hola.third_line,   R"(| | '_ \ / _ \| |/ _` |   / _ \ / _` | |/ _ \/ __| |)", sizeof(hola.first_line));
   strncpy (hola.forth_line,   R"(| | | | | (_) | | (_| |  / ___ \ (_| | | (_) \__ \_|)", sizeof(hola.first_line));

@@ -1,3 +1,9 @@
+/*
+ * Automatically generated Writes
+ *
+ *
+ */
+
 #include <iostream>
 #include <mpi.h>
 #include <adios.h>

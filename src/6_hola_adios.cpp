@@ -16,18 +16,18 @@
 
 #define MASTER 0
 
-static const size_t nb_chars      = 12;
-// for now we replace leading ¡ by ! to get same number of characters per rank  (we fall on a prime otherwise T_T)
+static const size_t nb_chars      = 16;
+// for now we replace leading ¡ (2 bytes) by ! (1 byte) to get same number of characters per rank (we fall on a prime otherwise T_T)
 static const char*  data          = u8"__!Hola Adios!__";
 static const char*  data_filename = "data/6.bp";
 int main (int argc, char** argv) {
   int       rank;
   int       com_size;
   MPI_Comm  comm = MPI_COMM_WORLD; 
-  
+
   uint64_t  adios_groupsize, adios_totalsize;
   int64_t   adios_handle;
-  
+
   size_t    batch_size            = 0;
   size_t    offset                = 0;
 
