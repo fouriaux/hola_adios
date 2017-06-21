@@ -8,7 +8,7 @@
  *    \___/|_|  |_|_|     /_/   \_\____/___\___/|____/
  *
  *
- *  Thread Safe ADIOS using no-xml API ?
+ *  no-xml API but still core dump
  *
  *
  */
@@ -19,16 +19,18 @@
 #include <omp.h>
 #include <adios.h>
 
-static const char*  data_filename = "data/4.bp";
+static const char*  data_filename = "data/11.bp";
 static const size_t line_size     = 53;
 static const size_t nb_lines      = 5;
+static int64_t      adios_handle;
+static int64_t      adios_group_id;
+static uint64_t     data_id;
 
 int main (int argc, char** argv) {
   int64_t  adios_handle;
   char      hola  [5][53];
   MPI_Comm  comm = MPI_COMM_WORLD;
   MPI_Init (&argc, &argv);
-  adios_init ("xml/4_config.xml", comm);
   omp_set_num_threads(5);
   strncpy (&hola[0][0],  R"( _ _           _            _       _ _           _ )", 53);
   strncpy (&hola[1][0],  R"((_) |__   ___ | | __ _     / \   __| (_) ___  ___| |)", 53);
@@ -44,16 +46,17 @@ int main (int argc, char** argv) {
 
   for (int i = 0; i < 5; i++)
   {
-    adios_define_var             (adios_group_id, "line_idx", "", adios_integer, 0,0,0);
-    data_id1  = adios_define_var (adios_group_id, "data",     "", adios_real, "1, line_size", "nb_lines, line_size", "line_idx,0");
+    adios_define_var (adios_group_id, "line_idx",  "", adios_integer, 0,0,0);
+    int var_id = adios_define_var (adios_group_id, "hola_data", "", adios_byte, "1,line_size", "nb_lines,line_size", "line_idx,0");
+    adios_set_transform (var_id, "none");
   }
-  adios_open  (&adios_handle, "hola", data_filename, "w", comm);
+  adios_open  (&adios_handle, "report", data_filename, "w", comm);
   adios_write (adios_handle, "line_size", &line_size);
   adios_write (adios_handle, "nb_lines", &nb_lines);
 #pragma omp parallel for
   for (int i = 0; i < 5; i++) {
     adios_write (adios_handle, "line_idx", &i);
-    adios_write (adios_handle, "data", &hola[i]);
+    adios_write (adios_handle, "hola_data", &hola[i]);
   }
   adios_close (adios_handle);
 
