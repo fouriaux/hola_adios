@@ -37,7 +37,7 @@ void open (const char* filename) {
     displacements[i] = nb_ranks*batch_size*i;
   }
   disp = rank*batch_size; // begining of file viewed from rank
-  MPI_Type_create_indexed_block (splitting, batch_size, b_disp, MPI_BYTE, &arraytype);
+  MPI_Type_create_indexed_block (splitting, batch_size, displacements, MPI_BYTE, &arraytype);
   MPI_Type_commit(&arraytype);
 
 int result =
