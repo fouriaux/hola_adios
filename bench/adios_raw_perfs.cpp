@@ -65,17 +65,17 @@ int main (int argc, char** argv) {
   char*                                 buffer          = NULL;
   uint64_t                              batch_size      = atoi(argv[1]);
 
-  MPI_Init(&argc, &argv);
-  MPI_Comm_rank(comm, &rank);
-  MPI_Comm_size(comm, &nb_ranks);
-  initAdios();
+  MPI_Init      (&argc, &argv);
+  MPI_Comm_rank (comm, &rank);
+  MPI_Comm_size (comm, &nb_ranks);
+  initAdios     ();
   total_size = batch_size * nb_ranks;
-  buffer = (char*) malloc (batch_size);
-  open (out_file);
-  write (buffer, total_size, batch_size, rank);
-  close();
-  adios_finalize(rank);
-  MPI_Finalize();
+  buffer     = (char*) malloc (batch_size);
+  open            (out_file);
+  write           (buffer, total_size, batch_size, rank);
+  close           ();
+  adios_finalize  (rank);
+  MPI_Finalize    ();
   return 0;
 }
 

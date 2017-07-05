@@ -41,10 +41,10 @@ void write (char* buffer){
                 + 4 \
                 + 4 * (batch_size);
   adios_group_size (adios_handle, adios_groupsize, &adios_totalsize);
+  adios_write (adios_handle, "global_size", &total_size);
+  adios_write (adios_handle, "batch_size",  &batch_size);
   for (int i = 0 ; i < splitting; i++) {
     size_t offset   = batch_size*rank + batch_size*nb_ranks*i;
-    adios_write (adios_handle, "global_size", &total_size);
-    adios_write (adios_handle, "batch_size",  &batch_size);
     adios_write (adios_handle, "offset",      &offset);
     adios_write (adios_handle, "data",        buffer);
   }

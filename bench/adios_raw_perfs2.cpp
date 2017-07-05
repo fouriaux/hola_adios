@@ -22,7 +22,7 @@ static uint64_t                              data_id1, data_id2;
 static int                                   rank;
 static int                                   nb_ranks;
 static uint64_t                              total_size;
-static float*                                buffer;
+static char*                                 buffer;
 static uint64_t                              batch_size;
 static uint64_t                              max_buffer_size; // buffer size in megabytes
 static const char*                           method;
@@ -34,7 +34,7 @@ void open (const char* filename) {
   adios_open (&adios_handle, "report", filename, "w", comm);
 }
 
-void write (float* buffer){
+void write (char* buffer){
   adios_groupsize = 4 \
                 + 4 \
                 + 4 \
@@ -59,7 +59,7 @@ void initAdios (const char* method, uint64_t max_buffer_size) {
   adios_define_var    (adios_group_id, "global_size",  "", adios_integer, 0,0,0);
   adios_define_var    (adios_group_id, "batch_size",   "", adios_integer, 0,0,0);
   adios_define_var    (adios_group_id, "offset",       "", adios_integer, 0,0,0);
-  data_id1  = adios_define_var (adios_group_id, "data",         "", adios_real, "batch_size", "global_size", "offset");
+  data_id1  = adios_define_var (adios_group_id, "data",         "", adios_byte, "batch_size", "global_size", "offset");
 }
 
 
@@ -79,7 +79,7 @@ int main (int argc, char** argv) {
   MPI_Comm_size(comm, &nb_ranks);
   initAdios(method, max_buffer_size);
   total_size = batch_size * nb_ranks; // each rank have 2 chunks to write
-  buffer = (float*) malloc (batch_size * sizeof(float));
+  buffer = (char*) malloc (batch_size);
   open (out_file);
   write (buffer);
   close();
